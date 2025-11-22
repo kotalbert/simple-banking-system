@@ -1,8 +1,10 @@
 """Simple Banking System"""
 import sys
 
+from bank import Bank
 from credit_card import CreditCard
 
+bank = Bank()
 
 def display_menu():
     print('1. Create an account')
@@ -12,6 +14,7 @@ def display_menu():
 
 def create_account():
     card = CreditCard()
+    bank.add_credit_card(card)
     print('Your card has been created')
     print('Your card number:')
     print(card)
