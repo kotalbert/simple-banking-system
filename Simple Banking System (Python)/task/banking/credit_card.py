@@ -34,8 +34,10 @@ class CreditCard:
         # Generate 9 random digits for the customer account number
         for _ in range(9):
             card_number.append(random.randint(0, 9))
-        # Generate a random digit for the checksum
-        card_number.append(random.randint(0, 9))
+        #  calculate checksum digit for firs 15 digits (Luhn algorithm can be implemented later)
+        checksum = CreditCard.calculate_checksum(card_number)
+        card_number.append(checksum)
+
         return card_number
 
     @property
@@ -53,3 +55,27 @@ class CreditCard:
 
     def __repr__(self):
         return digits_to_string(self._digits)
+
+    @staticmethod
+    def calculate_checksum(card_number: list[int]) -> int:
+        """Calculate the checksum digit for the credit card number using Luhn algorithm.
+
+        :param card_number: The first 15 digits of the credit card number.
+        :return: The checksum digit.
+        """
+
+        def luhn_double(n: int) -> int:
+            n *= 2
+            if n > 9:
+                n -= 9
+            return n
+
+        total = 0
+        for i, digit in enumerate(card_number):
+            if i % 2 == 0:
+                total += luhn_double(digit)
+            else:
+                total += digit
+
+        checksum = (10 - (total % 10)) % 10
+        return checksum
