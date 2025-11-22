@@ -6,6 +6,7 @@ from credit_card import CreditCard
 
 bank = Bank()
 
+
 def display_menu():
     print('1. Create an account')
     print('2. Log into account')
@@ -42,19 +43,15 @@ def handle_successful_login(credit_card_number: str):
 
 
 def handle_login():
-    card_number = input('Enter your card number:')
-    pin = input('Enter your PIN:')
+    card_number = input('Enter your card number: ')
+    pin = input('Enter your PIN: ')
     login_status = bank.login_action(card_number, pin)
     match login_status:
         case LoginStatus.SUCCESS:
             print('You have successfully logged in!')
             handle_successful_login(card_number)
-        case LoginStatus.WRONG_CARD_NUMBER:
+        case _:
             print('Wrong card number or PIN!')
-        case LoginStatus.WRONG_PIN:
-            print('Wrong card number or PIN!')
-        case LoginStatus.NO_SUCH_ACCOUNT:
-            print('No such account!')
 
 
 def handle_command(command):
