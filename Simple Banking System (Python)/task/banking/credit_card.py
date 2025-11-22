@@ -38,5 +38,14 @@ class CreditCard:
         card_number.append(random.randint(0, 9))
         return card_number
 
+    @property
+    def pin(self) -> str:
+        """Get the PIN of the credit card.
+
+        :return: The PIN as a string.
+        """
+
+        return self._pin
+
     def __repr__(self):
         return digits_to_string(self._digits)
