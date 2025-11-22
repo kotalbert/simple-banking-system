@@ -1,6 +1,8 @@
 """A module representing a bank in a simple banking system."""
 from enum import Enum
 
+from credit_card import CreditCard
+
 
 class LoginStatus(Enum):
     SUCCESS = 1
@@ -39,6 +41,15 @@ class Bank:
         if not self.validate_pin(card_number, pin):
             return LoginStatus.WRONG_PIN
         return LoginStatus.SUCCESS
+
+    def get_credit_card(self, card_number) -> CreditCard:
+        """Retrieve the credit card associated with the given card number.
+
+        :param card_number: The credit card number as a string.
+        :return: The CreditCard instance if found, else None.
+        """
+
+        return self._accounts[card_number]
 
     @staticmethod
     def validate_card_number(card_number):

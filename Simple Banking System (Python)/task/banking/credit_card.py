@@ -47,5 +47,9 @@ class CreditCard:
 
         return self._pin
 
+    @property
+    def balance(self) -> int:
+        return self._balance
+
     def __repr__(self):
         return digits_to_string(self._digits)
