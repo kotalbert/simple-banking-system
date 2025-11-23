@@ -35,10 +35,19 @@ class CreditCard:
         for _ in range(9):
             card_number.append(random.randint(0, 9))
         #  calculate checksum digit for firs 15 digits (Luhn algorithm can be implemented later)
-        checksum = CreditCard.calculate_checksum(card_number)
+        checksum = CreditCard._calculate_checksum(card_number)
         card_number.append(checksum)
 
         return card_number
+
+    @property
+    def card_number(self) -> str:
+        """Get the credit card number as a string.
+
+        :return: The credit card number as a string.
+        """
+
+        return digits_to_string(self._digits)
 
     @property
     def pin(self) -> str:
@@ -57,7 +66,7 @@ class CreditCard:
         return digits_to_string(self._digits)
 
     @staticmethod
-    def calculate_checksum(card_number: list[int]) -> int:
+    def _calculate_checksum(card_number: list[int]) -> int:
         """Calculate the checksum digit for the credit card number using Luhn algorithm.
 
         :param card_number: The first 15 digits of the credit card number.

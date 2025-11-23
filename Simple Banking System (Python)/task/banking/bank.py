@@ -2,6 +2,7 @@
 from enum import Enum
 
 from credit_card import CreditCard
+from db import add_credit_card_to_db
 
 
 class LoginStatus(Enum):
@@ -19,13 +20,16 @@ class Bank:
     def __init__(self):
         self._accounts = {}
 
-    def add_credit_card(self, credit_card):
+    def add_credit_card(self, credit_card: CreditCard):
         """Add a credit card account to the bank.
+
+        Write card to the database.
 
         :param credit_card: An instance of CreditCard to be added to the bank.
         """
 
         self._accounts[str(credit_card)] = credit_card
+        add_credit_card_to_db(credit_card.card_number, credit_card.pin)
 
     def login_action(self, card_number, pin: str) -> LoginStatus:
         """Attempt to log into a credit card.

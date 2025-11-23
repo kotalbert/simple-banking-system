@@ -3,9 +3,10 @@ import sys
 
 from bank import Bank, LoginStatus
 from credit_card import CreditCard
+from db import init_db
 
 bank = Bank()
-
+init_db()
 
 def display_menu():
     print('1. Create an account')

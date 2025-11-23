@@ -1,7 +1,6 @@
 """A database module for a simple banking system using SQLite."""
 import sqlite3
 
-
 def get_connection():
     """Establishes and returns a connection to the SQLite database."""
 
@@ -9,28 +8,43 @@ def get_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-
 def init_db():
     """Initializes the database by creating the necessary tables."""
 
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute('''
-                   CREATE TABLE IF NOT EXISTS card
-                   (
-                       id
-                       INTEGER
-                       PRIMARY
-                       KEY,
-                       number
-                       TEXT,
-                       pin
-                       TEXT,
-                       balance
-                       INTEGER
-                       DEFAULT
-                       0
-                   );
-                   ''')
+    with get_connection() as conn:
+        cursor.execute("""
+                       CREATE TABLE IF NOT EXISTS card
+                       (
+                           id
+                           INTEGER
+                           PRIMARY
+                           KEY,
+                           number
+                           TEXT,
+                           pin
+                           TEXT,
+                           balance
+                           INTEGER
+                           DEFAULT
+                           0
+                       );
+                       """)
+        conn.commit()
+
+
+def add_credit_card_to_db(card_number: str, pin: str):
+    """Adds a new credit card to the database.
+
+    :param card_number: The credit card number as a string.
+    :param pin: The PIN associated with the credit card.
+    """
+
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+                       INSERT INTO card (number, pin, balance)
+                       VALUES (?, ?, 0);
+                       """, (card_number, pin))
     conn.commit()
-    conn.close()
