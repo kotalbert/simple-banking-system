@@ -14,21 +14,13 @@ def init_db():
     conn = get_connection()
     cursor = conn.cursor()
     with get_connection() as conn:
-        cursor.execute("""
+        cursor.execute(r"""
                        CREATE TABLE IF NOT EXISTS card
                        (
-                           id
-                           INTEGER
-                           PRIMARY
-                           KEY,
-                           number
-                           TEXT,
-                           pin
-                           TEXT,
-                           balance
-                           INTEGER
-                           DEFAULT
-                           0
+                           id INTEGER PRIMARY KEY,
+                           number TEXT,
+                           pin TEXT,
+                           balance INTEGER DEFAULT 0
                        );
                        """)
         conn.commit()
@@ -48,3 +40,15 @@ def add_credit_card_to_db(card_number: str, pin: str):
                        VALUES (?, ?, 0);
                        """, (card_number, pin))
     conn.commit()
+
+def fetch_all_credit_cards_from_db() -> list[sqlite3.Row]:
+    """Fetches all credit cards from the database.
+
+    :return: A list of sqlite3.Row objects representing the credit cards.
+    """
+
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT number, pin, balance FROM card;")
+        rows = cursor.fetchall()
+    return rows

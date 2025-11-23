@@ -2,7 +2,7 @@
 from enum import Enum
 
 from credit_card import CreditCard
-from db import add_credit_card_to_db
+from db import add_credit_card_to_db, fetch_all_credit_cards_from_db
 
 
 class LoginStatus(Enum):
@@ -18,7 +18,8 @@ class Bank:
     The purpose is to represent a bank that can hold multiple credit card accounts."""
 
     def __init__(self):
-        self._accounts = {}
+        self._accounts: dict[str, CreditCard] = {}
+        self._populate_accounts()
 
     def add_credit_card(self, credit_card: CreditCard):
         """Add a credit card account to the bank.
@@ -81,3 +82,10 @@ class Bank:
         except ValueError:
             return False
         return False
+
+    def _populate_accounts(self):
+        """Read card from database and add to class"""
+        credit_card_rows = fetch_all_credit_cards_from_db()
+        for row in credit_card_rows:
+            card = CreditCard.from_db(row['number'], row['pin'], row['balance'])
+            self._accounts[row['number']] = card

@@ -1,4 +1,6 @@
 """Credit Card module for Simple Banking System."""
+from __future__ import annotations
+
 import random
 
 from utils import digits_to_string
@@ -88,3 +90,13 @@ class CreditCard:
 
         checksum = (10 - (total % 10)) % 10
         return checksum
+
+    @staticmethod
+    def from_db(number: str, pin: str, balance: int) -> CreditCard:
+        # this will init a new card number and pin, but I need to override them
+        card =  CreditCard()
+        card._digits = [int(d) for d in number] # unpack string to list of digits
+        card._pin = pin
+        card._balance = balance
+        return card
+
