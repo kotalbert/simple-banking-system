@@ -17,13 +17,13 @@ class CreditCard:
 
     Attributes:
         _digits (List[int]): The credit card number, represented as array of integers.
-        _balance (int): The balance of the credit card account.
+        balance (int): The balance of the credit card account.
     """
 
     def __init__(self):
         self._digits = self._generate_card_number()
         self._pin = f'{random.randint(0, 9999):04}'
-        self._balance = 0
+        self.balance = 0
 
     @staticmethod
     def _generate_card_number() -> list[int]:
@@ -60,10 +60,6 @@ class CreditCard:
 
         return self._pin
 
-    @property
-    def balance(self) -> int:
-        return self._balance
-
     def __repr__(self):
         return digits_to_string(self._digits)
 
@@ -94,11 +90,11 @@ class CreditCard:
     @staticmethod
     def from_db(number: str, pin: str, balance: int) -> CreditCard:
         # this will init a new card number and pin, but I need to override them
-        card =  CreditCard()
-        card._digits = [int(d) for d in number] # unpack string to list of digits
+        card = CreditCard()
+        card._digits = [int(d) for d in number]  # unpack string to list of digits
         card._pin = pin
-        card._balance = balance
+        card.balance = balance
         return card
 
     def add_income(self, amount: int):
-        self._balance += amount
+        self.balance += amount

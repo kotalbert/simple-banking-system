@@ -2,7 +2,7 @@
 from enum import Enum
 
 from credit_card import CreditCard
-from db import add_credit_card_to_db, fetch_all_credit_cards_from_db, update_card_balance_in_db
+from db import add_credit_card_to_db, fetch_all_credit_cards_from_db, update_card_balance_in_db, do_transfer
 
 
 class LoginStatus(Enum):
@@ -100,3 +100,25 @@ class Bank:
         card = self.get_credit_card(card_number)
         card.add_income(amount)
         update_card_balance_in_db(card_number, card.balance)
+
+    def do_transfer(self, from_card_number: str, to_card_number: str, amount: int) -> bool:
+        """Transfer amount from one credit card to another.
+
+        :param from_card_number: The credit card number to transfer from.
+        :param to_card_number: The credit card number to transfer to.
+        :param amount: The amount to be transferred.
+        :return: True if the transfer was successful, False otherwise.
+        """
+
+        from_card = self.get_credit_card(from_card_number)
+        to_card = self.get_credit_card(to_card_number)
+
+        if from_card.balance < amount:
+            return False
+
+        from_card.balance -= amount
+        to_card.balance += amount
+
+        do_transfer(from_card_number, to_card_number, amount)
+
+        return True

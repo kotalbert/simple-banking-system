@@ -42,6 +42,48 @@ def handle_add_income(card: CreditCard) -> None:
     print()
 
 
+def handle_transfer(card) -> None:
+    """Handle money transfer from one card to another.
+
+    This function validate if card exists, if the card number is valid.
+    Check if there are enough funds to make the transfer.
+    Prompt user for necessary inputs and display appropriate messages.
+
+    :param card:
+    :return:
+    """
+    print('Transfer')
+    print('Enter card number:')
+    to_card_number = input()
+
+    if not bank.validate_card_number(to_card_number):
+        print('Probably you made a mistake in the card number. Please try again!')
+        print()
+        return
+
+    if to_card_number == card.card_number:
+        print("You can't transfer money to the same account!")
+        print()
+        return
+
+    if not bank.card_exists(to_card_number):
+        print('Such a card does not exist.')
+        print()
+        return
+
+    print('Enter how much money you want to transfer:')
+    amount = int(input())
+
+    if amount > card.balance:
+        print('Not enough money!')
+        print()
+        return
+
+    bank.do_transfer(card.card_number, to_card_number, amount)
+    print('Success!')
+    print()
+
+
 def handle_successful_login(credit_card_number: str) -> None:
     card = bank.get_credit_card(credit_card_number)
     while True:
@@ -53,8 +95,9 @@ def handle_successful_login(credit_card_number: str) -> None:
             case '2':
                 handle_add_income(card)
             case '3':
-                pass
+                handle_transfer(card)
             case '4':
+                # todo: implement close account
                 pass
             case '5':
                 print('You have successfully logged out!')
