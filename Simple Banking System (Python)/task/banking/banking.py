@@ -5,8 +5,8 @@ from bank import Bank, LoginStatus
 from credit_card import CreditCard
 from db import init_db
 
-bank = Bank()
 init_db()
+bank = Bank()
 
 def display_menu():
     print('1. Create an account')
@@ -23,11 +23,16 @@ def create_account():
     print('Your card PIN:')
     print(card.pin)
 
+def display_account_menu():
+    print('1. Balance')
+    print('2. Add income')
+    print('3. Do transfer')
+    print('4. Close account')
+    print('5. Log out')
+    print('0. Exit')
 
 def handle_successful_login(credit_card_number: str):
-    print('1. Balance')
-    print('2. Log out')
-    print('0. Exit')
+    display_account_menu()
     card = bank.get_credit_card(credit_card_number)
     while True:
         command = input()
@@ -35,6 +40,12 @@ def handle_successful_login(credit_card_number: str):
             case '1':
                 print(f'Balance: {card.balance}')
             case '2':
+                pass
+            case '3':
+                pass
+            case '4':
+                pass
+            case '5':
                 print('You have successfully logged out!')
                 return
             case '0':
