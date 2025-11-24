@@ -2,7 +2,7 @@
 from enum import Enum
 
 from credit_card import CreditCard
-from db import add_credit_card_to_db, fetch_all_credit_cards_from_db
+from db import add_credit_card_to_db, fetch_all_credit_cards_from_db, update_card_balance_in_db
 
 
 class LoginStatus(Enum):
@@ -99,3 +99,4 @@ class Bank:
 
         card = self.get_credit_card(card_number)
         card.add_income(amount)
+        update_card_balance_in_db(card_number, card.balance)

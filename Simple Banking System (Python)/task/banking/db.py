@@ -14,8 +14,7 @@ def init_db():
     conn = get_connection()
     cursor = conn.cursor()
     with get_connection() as conn:
-        cursor.execute(r"""
-                       CREATE TABLE IF NOT EXISTS card
+        cursor.execute("""CREATE TABLE IF NOT EXISTS card
                        (
                            id INTEGER PRIMARY KEY,
                            number TEXT,
@@ -52,3 +51,19 @@ def fetch_all_credit_cards_from_db() -> list[sqlite3.Row]:
         cursor.execute("SELECT number, pin, balance FROM card;")
         rows = cursor.fetchall()
     return rows
+
+def update_card_balance_in_db(card_number: str, new_balance: int):
+    """Updates the balance of a credit card in the database.
+
+    :param card_number: The credit card number as a string.
+    :param new_balance: The new balance to be set.
+    """
+
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+                       UPDATE card
+                       SET balance = ?
+                       WHERE number = ?;
+                       """, (new_balance, card_number))
+    conn.commit()
