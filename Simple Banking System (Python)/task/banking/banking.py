@@ -31,6 +31,12 @@ def display_account_menu():
     print('5. Log out')
     print('0. Exit')
 
+def handle_add_income(card: CreditCard):
+    print('Enter income:')
+    income = int(input())
+    bank.add_income_to_card(card.card_number, income)
+    print('Income was added!')
+
 def handle_successful_login(credit_card_number: str):
     display_account_menu()
     card = bank.get_credit_card(credit_card_number)
@@ -40,7 +46,7 @@ def handle_successful_login(credit_card_number: str):
             case '1':
                 print(f'Balance: {card.balance}')
             case '2':
-                pass
+                handle_add_income(card)
             case '3':
                 pass
             case '4':

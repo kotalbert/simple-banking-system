@@ -89,3 +89,13 @@ class Bank:
         for row in credit_card_rows:
             card = CreditCard.from_db(row['number'], row['pin'], row['balance'])
             self._accounts[row['number']] = card
+
+    def add_income_to_card(self, card_number: str, amount: int):
+        """Add income to the credit card account.
+
+        :param card_number: The credit card number as a string.
+        :param amount: The amount to be added to the account balance.
+        """
+
+        card = self.get_credit_card(card_number)
+        card.add_income(amount)

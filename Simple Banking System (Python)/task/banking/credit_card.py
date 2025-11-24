@@ -100,3 +100,5 @@ class CreditCard:
         card._balance = balance
         return card
 
+    def add_income(self, amount: int):
+        self._balance += amount
