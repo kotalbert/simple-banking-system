@@ -104,3 +104,17 @@ def do_transfer(from_card_number: str, to_card_number: str, amount: int) -> bool
                        WHERE number = ?;
                        """, (amount, to_card_number))
     conn.commit()
+
+def close_account_in_db(card_number: str) -> None:
+    """Closes the credit card account associated with the given card number.
+
+    :param card_number: The credit card number as a string.
+    """
+
+    with get_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+                       DELETE FROM card
+                       WHERE number = ?;
+                       """, (card_number,))
+    conn.commit()

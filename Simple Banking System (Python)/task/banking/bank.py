@@ -2,7 +2,8 @@
 from enum import Enum
 
 from credit_card import CreditCard
-from db import add_credit_card_to_db, fetch_all_credit_cards_from_db, update_card_balance_in_db, do_transfer
+from db import add_credit_card_to_db, fetch_all_credit_cards_from_db, update_card_balance_in_db, do_transfer, \
+    close_account_in_db
 
 
 class LoginStatus(Enum):
@@ -122,3 +123,13 @@ class Bank:
         do_transfer(from_card_number, to_card_number, amount)
 
         return True
+
+    def close_account(self, card_number) -> None:
+        """Close the credit card account associated with the given card number.
+
+        Delete the account from the bank's records and the database.
+        :param card_number: The credit card number as a string.
+        """
+        del self._accounts[card_number]
+        close_account_in_db(card_number)
+

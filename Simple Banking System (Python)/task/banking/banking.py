@@ -84,6 +84,11 @@ def handle_transfer(card) -> None:
     print()
 
 
+def handle_close_account(card: CreditCard) -> None:
+    bank.close_account(card.card_number)
+    print('The account has been closed!')
+
+
 def handle_successful_login(credit_card_number: str) -> None:
     card = bank.get_credit_card(credit_card_number)
     while True:
@@ -97,9 +102,7 @@ def handle_successful_login(credit_card_number: str) -> None:
             case '3':
                 handle_transfer(card)
             case '4':
-                # todo: implement close account
-                pass
-            case '5':
+                handle_close_account(card)
                 print('You have successfully logged out!')
                 return
             case '0':
