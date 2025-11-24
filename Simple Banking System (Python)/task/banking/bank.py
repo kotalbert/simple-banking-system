@@ -57,7 +57,7 @@ class Bank:
         return self._accounts[card_number]
 
     @staticmethod
-    def validate_card_number(card_number):
+    def validate_card_number(card_number) -> bool:
         """Check if passed card number is valid.
 
         For now just checks if it is a string of length 16.
@@ -67,12 +67,12 @@ class Bank:
 
         return isinstance(card_number, str) and len(card_number) == 16
 
-    def card_exists(self, card_number, pin):
+    def card_exists(self, card_number, pin) -> bool:
         """Check if account exists in a bank"""
 
         return card_number in self._accounts
 
-    def validate_pin(self, card_number, pin):
+    def validate_pin(self, card_number, pin) -> bool:
         """Check if the PIN is correct for the given card number."""
 
         try:
@@ -83,14 +83,14 @@ class Bank:
             return False
         return False
 
-    def _populate_accounts(self):
+    def _populate_accounts(self) -> None:
         """Read card from database and add to class"""
         credit_card_rows = fetch_all_credit_cards_from_db()
         for row in credit_card_rows:
             card = CreditCard.from_db(row['number'], row['pin'], row['balance'])
             self._accounts[row['number']] = card
 
-    def add_income_to_card(self, card_number: str, amount: int):
+    def add_income_to_card(self, card_number: str, amount: int) -> None:
         """Add income to the credit card account.
 
         :param card_number: The credit card number as a string.
