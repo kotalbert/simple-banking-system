@@ -57,7 +57,7 @@ def handle_transfer(card) -> None:
     to_card_number = input()
 
     if not bank.validate_card_number(to_card_number):
-        print('Probably you made a mistake in the card number. Please try again!')
+        print('Probably you made mistake in card number. Please try again!')
         print()
         return
 

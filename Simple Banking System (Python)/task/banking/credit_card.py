@@ -88,6 +88,19 @@ class CreditCard:
         return checksum
 
     @staticmethod
+    def verify_luhn(card_number: str) -> bool:
+        """Verify if the credit card number is valid using Luhn algorithm.
+
+        :param card_number: The credit card number as a string.
+        :return: True if the card number is valid, False otherwise.
+        """
+
+        digits = [int(d) for d in card_number]
+        checksum_digit = digits.pop()  # Remove the last digit (checksum)
+        calculated_checksum = CreditCard._calculate_checksum(digits)
+        return checksum_digit == calculated_checksum
+
+    @staticmethod
     def from_db(number: str, pin: str, balance: int) -> CreditCard:
         # this will init a new card number and pin, but I need to override them
         card = CreditCard()

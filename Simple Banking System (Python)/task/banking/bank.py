@@ -42,7 +42,7 @@ class Bank:
         """
         if not self.validate_card_number(card_number):
             return LoginStatus.WRONG_CARD_NUMBER
-        if not self.card_exists(card_number, pin):
+        if not self.card_exists(card_number):
             return LoginStatus.NO_SUCH_ACCOUNT
         if not self.validate_pin(card_number, pin):
             return LoginStatus.WRONG_PIN
@@ -61,17 +61,19 @@ class Bank:
     def validate_card_number(card_number) -> bool:
         """Check if passed card number is valid.
 
-        For now just checks if it is a string of length 16.
+        Check Luhn algorithm.
 
         :param card_number: The credit card number as a string.
         """
+        card = CreditCard()
+        return isinstance(card_number, str) and len(card_number) == 16 and CreditCard.verify_luhn(card_number)
 
-        return isinstance(card_number, str) and len(card_number) == 16
 
-    def card_exists(self, card_number, pin) -> bool:
+    def card_exists(self, card_number) -> bool:
         """Check if account exists in a bank"""
 
         return card_number in self._accounts
+
 
     def validate_pin(self, card_number, pin) -> bool:
         """Check if the PIN is correct for the given card number."""
@@ -84,12 +86,14 @@ class Bank:
             return False
         return False
 
+
     def _populate_accounts(self) -> None:
         """Read card from database and add to class"""
         credit_card_rows = fetch_all_credit_cards_from_db()
         for row in credit_card_rows:
             card = CreditCard.from_db(row['number'], row['pin'], row['balance'])
             self._accounts[row['number']] = card
+
 
     def add_income_to_card(self, card_number: str, amount: int) -> None:
         """Add income to the credit card account.
@@ -101,6 +105,7 @@ class Bank:
         card = self.get_credit_card(card_number)
         card.add_income(amount)
         update_card_balance_in_db(card_number, card.balance)
+
 
     def do_transfer(self, from_card_number: str, to_card_number: str, amount: int) -> bool:
         """Transfer amount from one credit card to another.
@@ -124,6 +129,7 @@ class Bank:
 
         return True
 
+
     def close_account(self, card_number) -> None:
         """Close the credit card account associated with the given card number.
 
@@ -132,4 +138,3 @@ class Bank:
         """
         del self._accounts[card_number]
         close_account_in_db(card_number)
-
