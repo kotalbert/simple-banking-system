@@ -13,7 +13,6 @@ def get_connection() -> sqlite3.Connection:
 def init_db() -> None:
     """Initializes the database by creating the necessary tables."""
 
-    conn = get_connection()
     cursor = conn.cursor()
     with get_connection() as conn:
         cursor.execute("""
